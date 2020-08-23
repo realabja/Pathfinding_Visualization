@@ -37,8 +37,8 @@ p{
 #display{
     /* margin: 20px; */
     background-color: rgba(128, 255, 0, 0.192);
-    height: 65%;
-    width: 90vw;
+    height: 70vh;
+    width: 70vh;
     margin: auto;
     overflow: hidden;
     margin-top: 20px;  
@@ -49,6 +49,9 @@ p{
     align-items: center;
 }
 #visualization{
+    
+    justify-content: center;
+    align-items: center;
     height: 95%;
     width: 95%;
     /* margin: auto; */
@@ -56,6 +59,7 @@ p{
     /* margin-bottom: 20px; */
     /* align-items: center; */
     background-color: white;
+    font-size: 0;
 }
 #control-unit{
     /* margin: 20px; */
@@ -65,4 +69,9 @@ p{
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+.box{
+    display: inline-block;
+    /* flex-direction: column; */
+    border: 1px solid black;
 }
