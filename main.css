@@ -23,6 +23,8 @@ body, html{
     width: 90vw;
     margin: auto;
     margin-top: 20px;
+    margin-bottom: 20px;
+
 }
 h3{
     margin-left: 20px;
@@ -38,12 +40,21 @@ p{
     height: 65%;
     width: 90vw;
     margin: auto;
-    margin-top: 20px;   
+    overflow: hidden;
+    margin-top: 20px;  
+    margin-bottom: 20px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #visualization{
-    height: 100%;
-    width: 100%;
-    padding: 2px;
+    height: 95%;
+    width: 95%;
+    /* margin: auto; */
+    /* margin-top: 10px; */
+    /* margin-bottom: 20px; */
+    /* align-items: center; */
     background-color: white;
 }
 #control-unit{
