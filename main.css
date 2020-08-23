@@ -24,6 +24,14 @@ body, html{
     margin: auto;
     margin-top: 20px;
 }
+h3{
+    margin-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+p{
+    margin-left: 5px;
+}
 #display{
     /* margin: 20px; */
     background-color: rgba(128, 255, 0, 0.192);
@@ -31,6 +39,12 @@ body, html{
     width: 90vw;
     margin: auto;
     margin-top: 20px;   
+}
+#visualization{
+    height: 100%;
+    width: 100%;
+    padding: 2px;
+    background-color: white;
 }
 #control-unit{
     /* margin: 20px; */
@@ -40,12 +54,4 @@ body, html{
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
-}
-h3{
-    margin-left: 20px;
-    margin-top: 5px;
-    margin-bottom: 3px;
-}
-p{
-    margin-left: 5px;
 }
