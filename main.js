@@ -1,29 +1,51 @@
+function print(toPrint){
+    console.log(toPrint);
+}
+
 var display = document.querySelector("#visualization");
 var width = 20;
 var squareHeight = display.offsetHeight/width;
 
 
+class Spot {
+    constructor(box) {
+      this.box = box;
+      this.coordinates = getCoordinates(box);
+      this.isVisited = false;
+      this.isBlocked = false; 
+      this.isEnd = false;
+      this.neighbours = neighbors(box);
+    }
+    distance(){
+        return getDistance(this.coordinates);
+    }
+    block(){
+        this.box.style.backgroundColor = "black";
+        this.isBlocked = true;
+    }
+    start(){
+        this.box.style.backgroundColor = "green";
+        this.isVisited = true;
+    }
+  }
+  
+
 // var extraPixels = display.offsetHeight - (width*squareHeight);
 // console.log(extraPixels);
 
-function print(toPrint){
-    console.log(toPrint);
-}
+
 // display.style.cssText = 'margin-right: -' + extraPixels +'px;';
  
 
 
-var grid = [];
 var gameGrid = [];
 var x = 0;
 var y = 0;
 while(y<width){
-    grid.push([]);
     gameGrid.push([]);
     while(x<width){
         display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight}px; width: ${squareHeight}px;" id="${y}-${x}"></div>`);
-        gameGrid[y].push(null);
-        grid[y].push(document.getElementById(""+y+"-"+x+""));
+        gameGrid[y].push(new Spot(document.getElementById(""+y+"-"+x+"")));
         x++;
         }
     y++;
@@ -36,12 +58,6 @@ function sleep(time) {
 
 function getCoordinates(box){
     return box.id.split("-");
-}
-
-function block(box){
-    box.style.backgroundColor = "black";
-    coordinates = getCoordinates(box);
-    gameGrid[coordinates[0]][coordinates[1]] = "block";
 }
 
 function start(box){
@@ -64,6 +80,7 @@ function getDistance(coordinates){
 }
 function walkto(box) {
     box.style.backgroundColor = "red";
+    gameGrid[getCoordinates(box)[0]][getCoordinates(box)[1]] = "visted";
 }
 function neighbors(box) {
     c = getCoordinates(box);
@@ -80,19 +97,18 @@ function neighbors(box) {
         if(neighborsCo[i][0]<0){
             neighborsCo[i] = null
         }
-        if(neighborsCo[i][1]<0){
+        else if(neighborsCo[i][1]<0){
             neighborsCo[i] = null
         }
     }
+    return neighborsCo
 }
-
 
 
 var startCoordinates = start(grid[1][5]);
 var endCoordinates = end(grid[8][9]);
-block(grid[2][4]);
 print(gameGrid);
-print(getDistance(startCoordinates));
+
 
 
 
