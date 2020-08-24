@@ -1,7 +1,7 @@
 var display = document.querySelector("#visualization");
-var width = 50;
-var squareHeight = (display.offsetHeight-(2*width))/width;
-var extraPixels = display.offsetHeight - ((width*(squareHeight+2)) - 2);
+var width = 30;
+var squareHeight = display.offsetHeight/width;
+var extraPixels = display.offsetHeight - (width*squareHeight);
 console.log(extraPixels);
 display.style.cssText = 'margin-right: -' + extraPixels +'px;';
  
@@ -21,6 +21,6 @@ while(x<width){
 
 
 
-// console.log(squareHeight)
+console.log(squareHeight)
 // console.log(display.offsetHeight)
 // console.log(width)
