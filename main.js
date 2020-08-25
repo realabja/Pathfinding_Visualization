@@ -3,7 +3,7 @@ function print(toPrint){
 }
 
 var display = document.querySelector("#visualization");
-var width = 20;
+var width = 40;
 var squareHeight = display.offsetHeight/width;
 
 
@@ -14,7 +14,7 @@ class Spot {
       this.isVisited = false;
       this.isBlocked = false; 
       this.isEnd = false;
-      this.neighbours = neighbors(box);
+      
     }
     distance(){
         return getDistance(this.coordinates);
@@ -27,6 +27,28 @@ class Spot {
         this.box.style.backgroundColor = "green";
         this.isVisited = true;
     }
+    end(){
+        this.box.style.backgroundColor = "blue";
+        this.isEnd = true;
+    }
+    getNeighbours(){
+        let nCo = neighbors(this.box);
+        print(nCo)
+        let i = 0;
+        let neighboursAr = []
+        while (i<7){
+            if (this.neighCo[i] !== null){
+                y = nCo[0];
+                x = nCo[1];
+                if (!(gameGrid[y][x].isblocked)) {
+                    neighboursAr.push(gameGrid[y][x]);
+                }
+            }
+            i++;
+        }
+        return neighboursAr
+    }
+
   }
   
 
@@ -59,40 +81,28 @@ function sleep(time) {
 function getCoordinates(box){
     return box.id.split("-");
 }
-
-function start(box){
-    box.style.backgroundColor = "green";
-    coordinates = getCoordinates(box);
-    gameGrid[coordinates[0]][coordinates[1]] = "start";
-    return coordinates;
-}
-
-function end(box){
-    box.style.backgroundColor = "blue";
-    coordinates = getCoordinates(box);
-    gameGrid[coordinates[0]][coordinates[1]] = "end";
-    return coordinates;
-}
 function getDistance(coordinates){
     jDistance = Math.abs( coordinates[0] - endCoordinates[0] );
     iDistance = Math.abs( coordinates[1] - endCoordinates[1] );
     return Math.sqrt( Math.pow(jDistance,2) + Math.pow(iDistance,2) );
 }
-function walkto(box) {
-    box.style.backgroundColor = "red";
-    gameGrid[getCoordinates(box)[0]][getCoordinates(box)[1]] = "visted";
+
+function int(str){
+    return parseInt(str, 10);
 }
 function neighbors(box) {
     c = getCoordinates(box);
+    let j = int(c[0]);
+    let i = int(c[1]);
     neighborsCo = []
-    neighborsCo.push([c[0],c[1]+1]);
-    neighborsCo.push([c[0]+1,c[1]+1]);
-    neighborsCo.push([c[0]+1,c[1]]);
-    neighborsCo.push([c[0]+1,c[1]-1]);
-    neighborsCo.push([c[0],c[1]-1]);
-    neighborsCo.push([c[0]-1,c[1]-1]);
-    neighborsCo.push([c[0]-1,c[1]]);
-    neighborsCo.push([c[0]-1,c[1]+1]);
+    neighborsCo.push([j,i+1]);
+    neighborsCo.push([j+1,i+1]);
+    neighborsCo.push([j+1,i]);
+    neighborsCo.push([j+1,i-1]);
+    neighborsCo.push([j,i-1]);
+    neighborsCo.push([j-1,i-1]);
+    neighborsCo.push([j-1,i]);
+    neighborsCo.push([j-1,i+1]);
     for (i=0; i<neighborsCo.length; i++) {
         if(neighborsCo[i][0]<0){
             neighborsCo[i] = null
@@ -105,9 +115,23 @@ function neighbors(box) {
 }
 
 
-var startCoordinates = start(grid[1][5]);
-var endCoordinates = end(grid[8][9]);
+
+
+
+
+
+
+
+
+
+
+
+
+
 print(gameGrid);
+gameGrid[3][6].start();
+gameGrid[9][15].end();
+print(gameGrid[9][15].getNeighbours());
 
 
 
