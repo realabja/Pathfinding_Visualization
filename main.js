@@ -14,6 +14,12 @@ class Spot {
       this.isVisited = false;
       this.isBlocked = false; 
       this.isEnd = false;
+      this.box.onmouseover = (e)=>{
+          print(e)
+          print(e.buttons)
+          print(this)
+
+      }
       
     }
     distance(){
@@ -37,10 +43,11 @@ class Spot {
         let i = 0;
         let neighboursAr = []
         while (i<7){
-            if (this.neighCo[i] !== null){
-                y = nCo[0];
-                x = nCo[1];
-                if (!(gameGrid[y][x].isblocked)) {
+            if (nCo[i] !== null){
+                y = nCo[i][0];
+                x = nCo[i][1];
+                print(gameGrid[y][x]);
+                if (!(gameGrid[y][x].isBlocked)) {
                     neighboursAr.push(gameGrid[y][x]);
                 }
             }
@@ -131,7 +138,7 @@ function neighbors(box) {
 print(gameGrid);
 gameGrid[3][6].start();
 gameGrid[9][15].end();
-print(gameGrid[9][15].getNeighbours());
+print(gameGrid[0][0].getNeighbours());
 
 
 
