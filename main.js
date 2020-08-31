@@ -142,8 +142,8 @@ class Spot {
   
 
 var display = document.querySelector("#visualization");
-var width = 20;
-var squareHeight = display.offsetHeight/width;
+var width = 30;
+var squareHeight = (display.offsetHeight-1)/width;
 var gameGrid = [];
 var x = 0;
 var y = 0;
@@ -166,8 +166,10 @@ function getCoordinates(box){
 }
 
 function getDistance(coordinates){
-    jDistance = Math.abs( coordinates[0] - endCoordinates[0] );
-    iDistance = Math.abs( coordinates[1] - endCoordinates[1] );
+    jDistance = Math.abs( coordinates[0] - setEnd[0] );
+    iDistance = Math.abs( coordinates[1] - setEnd[1] );
+    // print(Math.sqrt( Math.pow(jDistance,2) + Math.pow(iDistance,2) ));
+
     return Math.sqrt( Math.pow(jDistance,2) + Math.pow(iDistance,2) );
 }
 
@@ -197,7 +199,7 @@ function neighbors(box) {
     // let p2 = performance.now();
     // print(p2-p1)
     return neighborsCo
-}
+    }
 
 
 async function a_star(){
@@ -206,59 +208,95 @@ async function a_star(){
     open.push(startnode);
     var closed = [];
     var node = open[0];
+    // let n1 = performance.now()
     while(!node.isEnd){
-        // await sleep(100);
-        let p2 = performance.now();
+        await sleep(50)
         if (bre){
             break;
         }
-        closed.push(open[0]);
         let neib = node.getNeighbours()
-        let x = 1
         for (i = 0; i < neib.length; i++){
-            // await sleep(100);
-            x++;
-            print(x)
             if (!neib[i].isVisited && !neib[i].isBlocked && !neib[i].walked){
                 neib[i].box.style.animation = "pop 0.1s ease 1 alternate";
-                neib[i].walk();
                 open.push(neib[i]);
+                neib[i].walk();
                 }
             }
-        await sleep(10);
-        open.shift();
+        open.shift();    
+        open = quick_Sort(open)
         node = open[0];
         node.visited();
+        closed.push(node)
+        if(open.length === 0){
+            window.alert("no path")
+            }
         node.box.style.animation = "pop 0.1s ease 1 alternate"
-        let p1 = performance.now();
-        print(p1-p2)
-        print(open)
-        // quick_Sort(open);
+        }
     }
-}
-
 function quick_Sort(array) {
 	if (array.length <= 1) { 
 		return array;
-	} else {
-
-		var left = [];
-		var right = [];
-		var newArray = [];
-		var pivot = array.pop();
-		var length = array.length;
-
-		for (var i = 0; i < length; i++) {
-			if (array[i] <= pivot) {
-				left.push(array[i]);
-			} else {
-				right.push(array[i]);
-			}
-		}
-
-		return newArray.concat(quick_Sort(left), pivot, quick_Sort(right));
 	}
+    else {
+        var left = [];
+	    var right = [];
+	    var newArray = [];
+	    var pivot = array.pop();
+	    var length = array.length;
+
+	    for (var i = 0; i < length; i++) {
+            let d1 = array[i].distance()
+            let d2 = pivot.distance()
+		    if ( d1 <= d2 ) {
+                // print(000)
+			    left.push(array[i]);
+		    } else {
+                // print(1000)
+			    right.push(array[i]);
+		    }
+	    }  
+    }
+    // print(quick_Sort(left))
+    // print(quick_Sort(right))
+    return newArray.concat(quick_Sort(left), pivot, quick_Sort(right));
 }
+
+
+
+function nquick_Sort(array) {
+	if (array.length <= 1) { 
+		return array;
+	}
+    else {
+        var left = [];
+	    var right = [];
+	    var newArray = [];
+	    var pivot = array.pop();
+	    var length = array.length;
+
+	    for (var i = 0; i < length; i++) {
+            
+		    if (array[i] <= pivot) {
+			    left.push(array[i]);
+		    } else {
+			    right.push(array[i]);
+		    }
+	    }  
+    }
+    // print(quick_Sort(left))
+    // print(quick_Sort(right))
+    return newArray.concat(nquick_Sort(left), pivot, nquick_Sort(right));
+}
+ let aa = [11,2131,12214,545123,625,7456,84876,1554235,2757457,11,112,111111111111111]
+//  print(aa.length)
+// print(nquick_Sort(aa).length)
+
+
+
+
+
+
+
 
 var runbtn = document.querySelector("#run");
 var brbtn = document.querySelector("#break");

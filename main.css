@@ -57,12 +57,12 @@ p{
     align-items: center;
     height: 95%;
     width: 95%;
-    /* margin: auto; */
-    /* margin-top: 10px; */
-    /* margin-bottom: 20px; */
-    /* align-items: center; */
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    align-items: center;
     background-color: white;
-    /* font-size: 0; */
+    font-size: 0;
 }
 #control-unit{
     /* margin: 20px; */
@@ -79,9 +79,9 @@ p{
     margin: 10px;
 }
 .box{
-    float: left;
-    /* display: inline-block; */
-    /* flex-direction: column; */
+    /* float: left; */
+    display: inline-block;
+    flex-direction: column;
     border: 1px solid black;
 }
 
