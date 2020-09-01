@@ -23,8 +23,10 @@ class Spot {
       this.box.ondrag = (e) =>{e.preventDefault()}
       this.box.draggable = false;
       this.walked = false;
+      this.trevesed = false;
       this.rcost = Infinity;
       this.fcost = Infinity;
+      this.parent = null;
     }
 
     distance(){
@@ -32,15 +34,18 @@ class Spot {
     }
     trev(){
         this.box.style.backgroundColor = "rgb(123, 255, 0)"
+        return this.parent 
     }
-    cost(r){
+    cost(node){
         let hcost = getDistance(this.coordinates, setEnd);
-        let rcost = r + 1;
+        let rcost = node.rcost + 1;
         
         if (this.rcost > rcost ){
+            this.parent = node
             this.rcost = rcost
         }
         this.fcost = hcost + this.rcost
+        
     }
 
     block(){
@@ -223,18 +228,21 @@ async function a_star(){
         }
         let neib = node.getNeighbours()
         for (i = 0; i < neib.length; i++){
-            let c_node = neib[i]
+            let c_node = neib[i];
+            if(c_node.visited && !c_node.isBlocked){
+                node.cost(c_node)
+            }
+            
             if (!c_node.isVisited && !c_node.isBlocked){
                 c_node.box.style.animation = "pop 0.1s ease 1 alternate";
                 if (!c_node.walked){
                     open.push(c_node);
                     c_node.walk();
                 }
-                c_node.cost(node.rcost);
-                
+                c_node.cost(node)
                 }
             }
-        print(node.fcost)
+        
         open.shift();    
         open = quick_Sort(open)
         node = open[0];
@@ -250,20 +258,10 @@ async function a_star(){
         }
     }
 async function treverse(node){
-    await sleep(10)
-    node.trev()
-    if (node.isStart){
-        return true
+    await sleep(100)
+    if (!node.isStart){
+        treverse(node.trev())
     }
-    let neib = node.getNeighbours()
-    let visited = []
-    for(i=0; i<neib.length; i++){
-        if (neib[i].isVisited){
-            visited.push(neib[i])
-        }
-    }
-    visited = quick_Sortr(visited)
-    treverse(visited[0])
 }
 function quick_Sort(array) {
 	if (array.length <= 1) { 
@@ -301,8 +299,8 @@ function quick_Sortr(array) {
 	    var length = array.length;
 
 	    for (var i = 0; i < length; i++) {
-            let d1 = array[i].rcost
-            let d2 = pivot.rcost
+            let d1 = array[i].rcost 
+            let d2 = pivot.rcost 
 		    if ( d1 <= d2 ) {
 			    left.push(array[i]);
 		    } else {
