@@ -39,6 +39,7 @@ p{
 }
 #display{
     /* margin: 20px; */
+    /* background-color: rgb(123, 255, 0); */
     background-color: rgba(128, 255, 0, 0.192);
     height: 70vh;
     width: 70vh;

@@ -23,10 +23,24 @@ class Spot {
       this.box.ondrag = (e) =>{e.preventDefault()}
       this.box.draggable = false;
       this.walked = false;
+      this.rcost = Infinity;
+      this.fcost = Infinity;
     }
 
     distance(){
-        return getDistance(this.coordinates);
+        return getDistance(this.coordinates, setEnd);
+    }
+    trev(){
+        this.box.style.backgroundColor = "rgb(123, 255, 0)"
+    }
+    cost(r){
+        let hcost = getDistance(this.coordinates, setEnd);
+        let rcost = r + 1;
+        
+        if (this.rcost > rcost ){
+            this.rcost = rcost
+        }
+        this.fcost = hcost + this.rcost
     }
 
     block(){
@@ -52,7 +66,8 @@ class Spot {
     start(){
         this.box.style.backgroundColor = "green";
         this.isVisited = true;
-        this.isStart = true
+        this.isStart = true;
+        this.rcost = 0;
     }
 
     end(){
@@ -72,7 +87,6 @@ class Spot {
         this.walked = true
     }
     getNeighbours(){
-        // let p1 = performance.now();
         let nCo = neighbors(this.box);
         let i = 0;
         let neighboursAr = []
@@ -86,8 +100,6 @@ class Spot {
             }
             i++;
         }
-        // let p2 = performance.now()
-        // print(p2-p1)
         return neighboursAr
     }
 
@@ -165,11 +177,9 @@ function getCoordinates(box){
     return box.id.split("-");
 }
 
-function getDistance(coordinates){
-    jDistance = Math.abs( coordinates[0] - setEnd[0] );
-    iDistance = Math.abs( coordinates[1] - setEnd[1] );
-    // print(Math.sqrt( Math.pow(jDistance,2) + Math.pow(iDistance,2) ));
-
+function getDistance(coordinates, targetcoordinates){
+    jDistance = Math.abs( coordinates[0] - targetcoordinates[0] );
+    iDistance = Math.abs( coordinates[1] - targetcoordinates[1] );
     return Math.sqrt( Math.pow(jDistance,2) + Math.pow(iDistance,2) );
 }
 
@@ -178,7 +188,6 @@ function int(str){
 }
 
 function neighbors(box) {
-    // let p1 = performance.now();
     c = getCoordinates(box);
     let j = int(c[0]);
     let i = int(c[1]);
@@ -196,8 +205,6 @@ function neighbors(box) {
             neighborsCo[i] = null
         } 
     }
-    // let p2 = performance.now();
-    // print(p2-p1)
     return neighborsCo
     }
 
@@ -208,7 +215,7 @@ async function a_star(){
     open.push(startnode);
     var closed = [];
     var node = open[0];
-    // let n1 = performance.now()
+    
     while(!node.isEnd){
         await sleep(50)
         if (bre){
@@ -216,12 +223,18 @@ async function a_star(){
         }
         let neib = node.getNeighbours()
         for (i = 0; i < neib.length; i++){
-            if (!neib[i].isVisited && !neib[i].isBlocked && !neib[i].walked){
-                neib[i].box.style.animation = "pop 0.1s ease 1 alternate";
-                open.push(neib[i]);
-                neib[i].walk();
+            let c_node = neib[i]
+            if (!c_node.isVisited && !c_node.isBlocked){
+                c_node.box.style.animation = "pop 0.1s ease 1 alternate";
+                if (!c_node.walked){
+                    open.push(c_node);
+                    c_node.walk();
+                }
+                c_node.cost(node.rcost);
+                
                 }
             }
+        print(node.fcost)
         open.shift();    
         open = quick_Sort(open)
         node = open[0];
@@ -232,7 +245,26 @@ async function a_star(){
             }
         node.box.style.animation = "pop 0.1s ease 1 alternate"
         }
+        if(node.isEnd){
+            treverse(node)
+        }
     }
+async function treverse(node){
+    await sleep(10)
+    node.trev()
+    if (node.isStart){
+        return true
+    }
+    let neib = node.getNeighbours()
+    let visited = []
+    for(i=0; i<neib.length; i++){
+        if (neib[i].isVisited){
+            visited.push(neib[i])
+        }
+    }
+    visited = quick_Sortr(visited)
+    treverse(visited[0])
+}
 function quick_Sort(array) {
 	if (array.length <= 1) { 
 		return array;
@@ -245,25 +277,19 @@ function quick_Sort(array) {
 	    var length = array.length;
 
 	    for (var i = 0; i < length; i++) {
-            let d1 = array[i].distance()
-            let d2 = pivot.distance()
+            let d1 = array[i].fcost
+            let d2 = pivot.fcost
 		    if ( d1 <= d2 ) {
-                // print(000)
 			    left.push(array[i]);
 		    } else {
-                // print(1000)
 			    right.push(array[i]);
 		    }
 	    }  
     }
-    // print(quick_Sort(left))
-    // print(quick_Sort(right))
     return newArray.concat(quick_Sort(left), pivot, quick_Sort(right));
 }
 
-
-
-function nquick_Sort(array) {
+function quick_Sortr(array) {
 	if (array.length <= 1) { 
 		return array;
 	}
@@ -275,26 +301,17 @@ function nquick_Sort(array) {
 	    var length = array.length;
 
 	    for (var i = 0; i < length; i++) {
-            
-		    if (array[i] <= pivot) {
+            let d1 = array[i].rcost
+            let d2 = pivot.rcost
+		    if ( d1 <= d2 ) {
 			    left.push(array[i]);
 		    } else {
 			    right.push(array[i]);
 		    }
 	    }  
     }
-    // print(quick_Sort(left))
-    // print(quick_Sort(right))
-    return newArray.concat(nquick_Sort(left), pivot, nquick_Sort(right));
+    return newArray.concat(quick_Sort(left), pivot, quick_Sort(right));
 }
- let aa = [11,2131,12214,545123,625,7456,84876,1554235,2757457,11,112,111111111111111]
-//  print(aa.length)
-// print(nquick_Sort(aa).length)
-
-
-
-
-
 
 
 
