@@ -195,7 +195,7 @@ class Spot {
 
 var display = document.querySelector("#visualization");
 var width = 40;
-var squareHeight = (display.offsetHeight-1)/width;
+var squareHeight = () => {return (display.offsetHeight-1)/width} ;
 var gameGrid = [];
 var x = 0;
 var y = 0;
@@ -206,9 +206,8 @@ function main(){
     while(y<width){
     gameGrid.push([]);
     while(x<width){
-        display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight}px; width: ${squareHeight}px;" id="${y}-${x}"></div>`);
+        display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight()}px; width: ${squareHeight()}px;" id="${y}-${x}"></div>`);
         gameGrid[y].push(new Spot(document.getElementById(""+y+"-"+x+"")));
-        print(gameGrid[y][x].coordinates)
         x++;
         }
     y++;
