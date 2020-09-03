@@ -191,30 +191,25 @@ class Spot {
 
 function getHeight(){
     let x = display.offsetHeight;
-    while ( x <1){
-        // await sleep(10);
-        x = display.offsetHeight;   
-    }
     return (x-1)/width;
 }
 
 
-
-
 var display = document.querySelector("#visualization");
 var width = 40;
-var squareHeight = getHeight() ;
 var gameGrid = [];
 var x = 0;
 var y = 0;
 var setStart = 0;
 var setEnd = 0;
 
-function main(){
+async function main(){
+    await sleep(100);
+    let height = getHeight();
     while(y<width){
     gameGrid.push([]);
     while(x<width){
-        display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight}px; width: ${squareHeight}px;" id="${y}-${x}"></div>`);
+        display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${height}px; width: ${height}px;" id="${y}-${x}"></div>`);
         gameGrid[y].push(new Spot(document.getElementById(""+y+"-"+x+"")));
         x++;
         }
