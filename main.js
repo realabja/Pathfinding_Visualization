@@ -204,7 +204,7 @@ var setStart = 0;
 var setEnd = 0;
 
 async function main(){
-    await sleep(1000);
+    await sleep(600);
     let height = getHeight();
     while(y<width){
     gameGrid.push([]);
