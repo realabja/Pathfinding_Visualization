@@ -212,7 +212,7 @@ function main(){
     while(y<width){
     gameGrid.push([]);
     while(x<width){
-        display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight()}px; width: ${squareHeight()}px;" id="${y}-${x}"></div>`);
+        display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight}px; width: ${squareHeight}px;" id="${y}-${x}"></div>`);
         gameGrid[y].push(new Spot(document.getElementById(""+y+"-"+x+"")));
         x++;
         }
