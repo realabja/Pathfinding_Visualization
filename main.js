@@ -188,14 +188,20 @@ class Spot {
     }
 }
   
-
+async function getContainerHeight(){
+    
+    while (display.offsetHeight<1 ){
+        await sleep(10);   
+    }
+    return (display.offsetHeight-1)/width
+}
 
 
 
 
 var display = document.querySelector("#visualization");
 var width = 40;
-var squareHeight = () => {return (display.offsetHeight-1)/width} ;
+var squareHeight = getContainerHeight() ;
 var gameGrid = [];
 var x = 0;
 var y = 0;
@@ -214,7 +220,6 @@ function main(){
     x = 0;
 }
 }
-
 main();
 
 async function a_star(){
