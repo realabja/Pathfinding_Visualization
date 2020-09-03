@@ -194,7 +194,7 @@ class Spot {
 
 
 var display = document.querySelector("#visualization");
-var width = 30;
+var width = 40;
 var squareHeight = (display.offsetHeight-1)/width;
 var gameGrid = [];
 var x = 0;
@@ -202,7 +202,8 @@ var y = 0;
 var setStart = 0;
 var setEnd = 0;
 
-while(y<width){
+function main(){
+    while(y<width){
     gameGrid.push([]);
     while(x<width){
         display.insertAdjacentHTML('beforeend', `<div class="box" style="height: ${squareHeight}px; width: ${squareHeight}px;" id="${y}-${x}"></div>`);
@@ -213,7 +214,9 @@ while(y<width){
     y++;
     x = 0;
 }
+}
 
+main();
 
 async function a_star(){
     let startnode = gameGrid[setStart[0]][setStart[1]]
